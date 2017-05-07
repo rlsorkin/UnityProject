@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectile
+  - Enemy
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -13,11 +16,11 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Projectiles
+  - Enemy
+  - Props
+  - Obstacles
   - 
   - 
   - 
@@ -40,4 +43,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3460619997
+    locked: 0
+  - name: Prop
+    uniqueID: 694461955
+    locked: 0
+  - name: Enemy
+    uniqueID: 1807543429
+    locked: 0
+  - name: Player
+    uniqueID: 3236217275
+    locked: 0
+  - name: Top
+    uniqueID: 3931956371
     locked: 0
