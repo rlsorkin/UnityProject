@@ -7,6 +7,9 @@ TagManager:
   - Projectile
   - Enemy
   - Obstacle
+  - Item
+  - Enemy2
+  - Enemy3
   layers:
   - Default
   - TransparentFX
@@ -58,4 +61,7 @@ TagManager:
     locked: 0
   - name: Top
     uniqueID: 3931956371
+    locked: 0
+  - name: 
+    uniqueID: 2040842785
     locked: 0

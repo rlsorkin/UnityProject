@@ -7,43 +7,66 @@ public class NPCscript : MonoBehaviour {
 
     public bool isSatisfied;
     public bool isTalking;
-    string[] npcStrings = new string[5];
+
+    string[] npcStrings1 = new string[5];
+    string[] npcStrings2 = new string[5];
+
     public GameObject npcCanvas;
+    public GameObject Player;
+    public GameObject rock;
+
     bool speechPause;
     bool firstContact;
     public bool ballGiven;
+    public int whichLines = 0;
+    public bool canGiven;
 
-    // Use this for initialization
     void Start () {
         isTalking = false;
         npcCanvas = GameObject.Find("NPCcanvas");
+        Player = GameObject.Find("Player");
         speechPause = false;
         firstContact = true;
         ballGiven = false;
+        canGiven = false;
 
-        npcStrings[0] = "Can you help me?";
-        npcStrings[1] = "Take this.";
-        npcStrings[2] = "Kill the Orb Spiders";
-        npcStrings[3] = "Don't worry they're mostly tame.";
-        npcStrings[4] = "One of em took something of mine";
+        npcStrings2[0] = "Hey, thanks!";
+        npcStrings2[1] = "You probably wanna get past the rock, huh?";
+        npcStrings2[2] = "I think Im strong enough now";
+        npcStrings2[3] = "Let me break that for you";
+        npcStrings2[4] = "";
+
+        npcStrings1[0] = "Can you help me?";
+        npcStrings1[1] = "Take this.";
+        npcStrings1[2] = "Kill the Orb Spiders";
+        npcStrings1[3] = "Don't worry they're mostly tame.";
+        npcStrings1[4] = "One of em took something of mine";
     }
-	
 
-  
-   void OnTriggerEnter2D(Collider2D coll)
+    void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Player")
         {
-            if (firstContact)
+            if (Player.GetComponent<PlayerMove>().canisterGotten)
             {
-                StartCoroutine(nextLine());
+                Debug.Log("NPC Got Can");
+                canGiven = true;
+            }
+
+            if (firstContact && !canGiven)
+            {
+                StartCoroutine(nextLine(npcStrings1, 1));
+                
+            } else if(canGiven)
+            {
+                StartCoroutine(nextLine(npcStrings2, 2));
             }
 
             speechPause = false;
             isTalking = true;
             int count = 0;
             count++;
-            Debug.Log("Activated" + " " + count + " " + isTalking);
+            Debug.Log("Activated" + " " + count + " " + canGiven);
             
         }
     }
@@ -61,7 +84,7 @@ public class NPCscript : MonoBehaviour {
 
     }
 
-    IEnumerator nextLine()
+    IEnumerator nextLine(string[] currentLines, int sequence)
     {
         for (int i = 0; i <= 4; i++)
         {
@@ -79,12 +102,17 @@ public class NPCscript : MonoBehaviour {
                 ballGiven = true;
 
             }
-            string thisText = npcStrings[i];
+            string thisText = currentLines[i];
             Text tempText = npcCanvas.GetComponentInChildren<Text>();
             tempText.text = thisText;
             Debug.Log("Trying...." + "Line" + i);
+            if(i > 3 && sequence == 2)
+            {
+                Destroy(rock);
+            }
             yield return new WaitForSeconds(2f);
         }
+        
     }
 
 

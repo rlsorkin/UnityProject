@@ -12,12 +12,27 @@ public class PlayerMove : MonoBehaviour {
     Animator anim;
     public GameObject projectile;
     public float projectileSpeed = 10f;
+
     public bool ballGotten;
+    public bool canisterGotten;
+    public bool takingDamage;
+
+    private SpriteRenderer myRenderer;
+    private Shader shaderGUItext;
+    private Shader shaderSpritesDefault;
 
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         ballGotten = false;
+        canisterGotten = false;
+        takingDamage = false;
+        
+
+        //myRenderer = gameObject.GetComponent<SpriteRenderer>();
+        //shaderGUItext = Shader.Find("GUI/Text Shader");
+        //shaderSpritesDefault = Shader.Find("Sprites-Default");
+
     }
 
     private void Update()
@@ -35,8 +50,15 @@ public class PlayerMove : MonoBehaviour {
 
                 projBody = currProjectile.GetComponent<Rigidbody2D>();
                 projBody.velocity = direction * projectileSpeed;
+                GetComponent<AudioSource>().Play();
 
             }
+        }
+
+        if (takingDamage)
+        {
+            //StartCoroutine(damageBlink());
+            takingDamage = false;
         }
     }
 
@@ -51,4 +73,33 @@ public class PlayerMove : MonoBehaviour {
     
     }
 
+    void whiteSprite()
+    {
+        myRenderer.material.shader = shaderGUItext;
+        myRenderer.color = Color.white;
+    }
+
+    void normalSprite()
+    {
+        myRenderer.material.shader = shaderSpritesDefault;
+        myRenderer.color = Color.white;
+    }
+
+    public IEnumerator damageBlink()
+    {
+        whiteSprite();
+        yield return new WaitForSeconds(.2f);
+        normalSprite();
+    }
+
+    private void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Item")
+        {
+            
+            canisterGotten = true;
+            Destroy(coll.gameObject);
+            Debug.Log(canisterGotten);
+        }
+    }
 }

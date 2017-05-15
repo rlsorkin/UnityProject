@@ -8,7 +8,11 @@ public class SceneControl : MonoBehaviour {
     public GameObject npcCanvas;
     public GameObject player;
     public GameObject npc;
+    public GameObject mainCam;
     public Text textObj;
+    public Canvas uiCanvas;
+    bool npcBall;
+
     public int currentPos = 0;
     public string currentText;
     string[] npcStrings = new string[5];
@@ -20,6 +24,10 @@ public class SceneControl : MonoBehaviour {
         player = GameObject.Find("Player");
         npcCanvas = GameObject.Find("NPCcanvas");
         npc = GameObject.Find("purpleMysteryGuy");
+
+        uiCanvas = mainCam.GetComponentInChildren<Canvas>();
+        uiCanvas.gameObject.SetActive(false);
+
         textObj = npcCanvas.GetComponentInChildren<Text>();
         npcCanvas.gameObject.SetActive(false);
         
@@ -33,12 +41,19 @@ public class SceneControl : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if (Input.GetKeyDown("escape"))
+        {
+            Application.Quit();
+        }
+
+
         npcTalking = npc.GetComponent<NPCscript>().isTalking;
-        bool npcBall = npc.GetComponent<NPCscript>().ballGiven;
+        npcBall = npc.GetComponent<NPCscript>().ballGiven;
         if (npcBall)
         {
             player.GetComponent<PlayerMove>().ballGotten = true;
-            Debug.Log("Ball Handoff");
+            StartCoroutine(tutorialMessage());
         }
 
         if (npcTalking)
@@ -62,5 +77,13 @@ public class SceneControl : MonoBehaviour {
             Debug.Log("Trying............");
             yield return new WaitForSeconds(2f);
         }
+    }
+
+    IEnumerator tutorialMessage()
+    {
+        uiCanvas.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        uiCanvas.gameObject.SetActive(false);
+        npcBall = false;
     }
 }

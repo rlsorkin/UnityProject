@@ -28,6 +28,24 @@ public class BasicProjectile : MonoBehaviour {
             enemyHealth.rb2d.AddForce(enemyHealth.knockBack * enemyHealth.forceMult, ForceMode2D.Impulse);
             enemyHealth.health -= 1;
         }
+
+        if (collision.gameObject.tag == "Enemy2")
+        {
+            Destroy(gameObject);
+            var enemyHealth = collision.gameObject.GetComponent<Enemy2Move>();
+            enemyHealth.takingDamage = true;
+            enemyHealth.rb2d.AddForce(enemyHealth.knockBack * enemyHealth.forceMult, ForceMode2D.Impulse);
+            enemyHealth.health -= 1;
+        }
+
+        if (collision.gameObject.tag == "Enemy3")
+        {
+            Destroy(gameObject);
+            var enemyHealth = collision.gameObject.GetComponent<Enemy3Move>();
+            enemyHealth.takingDamage = true;
+            enemyHealth.rb2d.AddForce(enemyHealth.knockBack * enemyHealth.forceMult, ForceMode2D.Impulse);
+            enemyHealth.health -= 1;
+        }
     }
 
 }

@@ -8,11 +8,11 @@ public class EnemyMove : MonoBehaviour
     public Animator anim;
     public Rigidbody2D rb2d;
     public GameObject target;
-
+    public GameObject batteryItem;
     public float moveSpeed;
     public float health;
     public float aggroRange;
-
+    public bool isDying;
     private float startTime;
     private bool canPerform;
     private Vector2 randomTarget;
@@ -64,8 +64,8 @@ public class EnemyMove : MonoBehaviour
         
         if (health <= 0)
         {
-            
-            Destroy(gameObject);
+           
+            setDeath();
         }
 
         if (inRange())
@@ -107,6 +107,12 @@ public class EnemyMove : MonoBehaviour
         //rb2d.AddForce((-knockBack) * forceMult, ForceMode2D.Impulse);
         //Debug.Log(takingDamage);
         takingDamage = false;
+    } 
+
+    private void setDeath()
+    {
+        GetComponent<AudioSource>().Play();
+        Destroy(gameObject);
     }
 
     private float GetNewSpeed(float health, float moveSpeed)
